@@ -1,9 +1,13 @@
 <script setup>
 import { ref, computed } from 'vue';
 import Header from './components/Header.vue';
-import Button from './components/Button.vue'
+import Button from './components/Button.vue';
+
+import {calcularTotalPagar} from './helpers'
 
 const cantidad = ref(10000);
+const meses = ref(6);
+const total = ref(calcularTotalPagar(cantidad.value , meses.value))
 const MAX = 20000;
 const MIN = 0;
 const STEP = 100;
@@ -47,7 +51,25 @@ const handleChangeIncremento = () => {
         <div class="my-5">
             <input type="range" name="" id="" class="w-full bg-lime-200 accent-lime-500 hover:accent-lime-600" :min="MIN"
                 :max="MAX" :step="STEP" v-model.number="cantidad" />
+
+            <p class="text-center my-10 text-5xl font-extrabold text-indigo-600">{{ formatearDinero }}</p>
+            <h2 class="text-2xl font-extrabold text-gray-500 text-center">Elige un <span
+                    class="text-indigo-600">plazo</span> a pagar</h2>
+            <select :value="meses" v-model.number="meses" name="" id=""
+                class="w-full p-2 bg-white border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-500 mt-10">
+                <option value="6">6 Meses</option>
+                <option value="12">12 Meses</option>
+                <option value="24">24 Meses</option>
+            </select>
         </div>
-        <p class="text-center my-10 text-5xl font-extrabold text-indigo-600">{{ formatearDinero }}</p>
+
+        <div class="my-5 space-y-3 bg-gray-50 p-5">
+            <h2 class="text-2xl font-extrabold text-gray-500 text-center">
+                Resumen <span class="text-indigo-600">de pagos</span>
+            </h2>
+            <p class="text-xl text-gray-500 text-center font-bold">{{ meses }} Meses</p>
+            <p class="text-xl text-gray-500 text-center font-bold">Total a pagar: {{ total }}</p>
+            <p class="text-xl text-gray-500 text-center font-bold">Mensuales: </p>
+        </div>
     </div>
 </template>
